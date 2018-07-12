@@ -1,0 +1,22 @@
+spring:
+ application:
+   name: squash
+ datasource:
+   url: jdbc:h2:~/squash;DB_CLOSE_DELAY=1000;AUTO_SERVER=TRUE
+   username: root
+   password: admin
+ jpa:
+   hibernate:
+     ddl-auto: create-drop
+server:
+ port: 9999
+
+
+
+---
+spring:
+ profiles: production
+ datasource:
+   url: jdbc:mysql:localhost:3306/squash;DB_CLOSE_DELAY=1000;AUTO_SERVER=TRUE
+   username: root
+   password: admin

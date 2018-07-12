@@ -3,6 +3,7 @@ package squash.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,40 +12,53 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import squash.dto.PlayerDTO;
 import squash.entity.Player;
+import squash.logic.PlayerManager;
 import squash.persistence.PlayerRepository;
 
 @RestController @ComponentScan("squash")
+@RequestMapping("/players")
 public class PlayerController {
 
-	@Autowired
-	private PlayerRepository player_repository;
-	
-	
-	@PostMapping("/players")
-	public Player add(@RequestBody Player player) {
-		return player_repository.save(player);
-	}
-	
-	@GetMapping("/players")
-	public List<Player> findAll() {
-	    return (List<Player>) player_repository.findAll();
-	}
-	
-	@GetMapping("/players/{id}")
-	public Optional<Player> findById(@PathVariable Long id) {
-		return player_repository.findById(id);
-	}
-	
-	@PutMapping("/players/{id}")
-	public Player update(@PathVariable Long id, @RequestBody Player player) {
-		return player_repository.save(player);
-	}
-	
-	@DeleteMapping("/players/{id}")
-	public void notActive(@PathVariable Long id, @RequestBody Player player) {
-		player_repository.delete(player);
-	}
+    @Autowired
+    private PlayerManager manager;
+
+    @Autowired
+    private DozerBeanMapper mapper;
+
+    /**
+     * Find all list.
+     *
+     * @return the list
+     */
+    @GetMapping("/")
+    public List<PlayerDTO> findAll() {
+        return (List<PlayerDTO>) mapper.map(manager.findAll(), PlayerDTO.class);
+    }
+
+    /**
+     * Find by id player dto.
+     *
+     * @param id the id
+     * @return the player dto
+     */
+    @GetMapping("/{id}")
+    public PlayerDTO findById(@PathVariable("id") Long id) {
+        return mapper.map(manager.findById(id), PlayerDTO.class);
+    }
+
+    /**
+     * Save player dto.
+     *
+     * @param playerDTO the player dto
+     * @return the player dto
+     */
+    @PostMapping("/")
+    public PlayerDTO save(@RequestBody PlayerDTO playerDTO) {
+        return mapper.map(manager.save(mapper.map(playerDTO, Player.class)), PlayerDTO.class);
+    }
 }

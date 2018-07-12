@@ -1,4 +1,4 @@
-package squash.entities;
+package squash.entity;
 
 public interface Squash {
 

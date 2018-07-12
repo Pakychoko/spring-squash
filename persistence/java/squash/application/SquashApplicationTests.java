@@ -1,4 +1,4 @@
-package test;
+package squash.application;
 
 
 import org.junit.Test;

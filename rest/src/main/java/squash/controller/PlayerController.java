@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import squash.entities.Player;
+import squash.entity.Player;
 import squash.persistence.PlayerRepository;
 
 @RestController @ComponentScan("squash")
